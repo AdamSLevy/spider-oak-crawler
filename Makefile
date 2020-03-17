@@ -1,6 +1,13 @@
-.PHONY: crawl
+# Let go build do the work of figuring out updated dependencies.
+.PHONY: crawl crawld generate
 
-all: crawl
+all: crawl crawld
 
-crawl:
+crawl: generate
 	go build ./cmd/crawl
+
+crawld: generate
+	go build ./cmd/crawld
+
+generate:
+	go generate ./internal/crawl

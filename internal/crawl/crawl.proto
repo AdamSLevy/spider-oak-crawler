@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package crawl;
+
+service Crawl {
+        rpc Start(URL) returns (Status) {}
+        rpc Stop(URL) returns (Status) {}
+        rpc List(URL) returns (ListResponse) {}
+}
+
+message URL {
+        string url = 1;
+}
+
+message Status {
+        string status = 1;
+}
+
+message ListResponse {}
