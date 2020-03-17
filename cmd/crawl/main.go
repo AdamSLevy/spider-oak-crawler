@@ -3,9 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/AdamSLevy/flagbind"
+	pb "github.com/AdamSLevy/spider-oak-crawler/internal/crawl"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 // Flags defines all command line flags used by the program.
@@ -16,13 +20,20 @@ import (
 // The tag value: <flag name>;<default value>;<usage>
 // Flag names default to their kebab-case equivalent.
 type Flags struct {
-	Start string `flag:";;Start crawling the URL"`
-	Stop  string `flag:";;Stop crawling the URL"`
-	List  bool   `flag:";;List current site tree for all URLs"`
-
-	action string
+	Start  string `flag:";;Start crawling the URL"`
+	Stop   string `flag:";;Stop crawling the URL"`
+	List   bool   `flag:";;List current site tree for all URLs"`
+	action string // Set by Validate(), may be "start", "stop", or "list"
 
 	Debug bool `flag:";;Print additional debug information"`
+
+	// API Settings
+	Server string `flag:";localhost:9090;Hostname:port of gRPC API"`
+
+	// TLS Settings
+	TLS                bool
+	CAFile             string
+	ServerHostOverride string
 }
 
 // Validate ensures that the provided flags were well-formed.
@@ -45,6 +56,10 @@ func (f *Flags) Validate() error {
 	if f.List {
 		set++
 		f.action = "list"
+	}
+
+	if set == 0 {
+		return flag.ErrHelp
 	}
 
 	if set > 1 {
@@ -75,18 +90,42 @@ func _main(args []string) error {
 		return err
 	}
 	if err := flags.Validate(); err != nil {
+		if err == flag.ErrHelp {
+			fs.Usage()
+		}
 		return err
 	}
 
+	// Set up gRPC client
+	var opts []grpc.DialOption
+	if flags.TLS {
+		creds, err :=
+			credentials.NewClientTLSFromFile(
+				flags.CAFile, flags.ServerHostOverride)
+		if err != nil {
+			log.Fatalf("Failed to create TLS credentials %v", err)
+		}
+		opts = append(opts, grpc.WithTransportCredentials(creds))
+	} else {
+		opts = append(opts, grpc.WithInsecure())
+	}
+
+	opts = append(opts, grpc.WithBlock())
+	conn, err := grpc.Dial(flags.Server, opts...)
+	if err != nil {
+		log.Fatalf("fail to dial: %v", err)
+	}
+	defer conn.Close()
+	client := pb.NewCrawlClient(conn)
+
 	switch flags.action {
 	case "list":
-		return list()
+		return list(client)
 	case "start":
-		return start(flags.Start)
+		return start(client, flags.Start)
 	case "stop":
-		return stop(flags.Stop)
+		return stop(client, flags.Stop)
 	default:
-		fs.Usage()
-		return flag.ErrHelp
+		panic(fmt.Errorf("unknown flags.action: %q", flags.action))
 	}
 }

@@ -3,10 +3,10 @@
 
 all: crawl crawld
 
-crawl: generate
+crawl:
 	go build ./cmd/crawl
 
-crawld: generate
+crawld:
 	go build ./cmd/crawld
 
 generate:

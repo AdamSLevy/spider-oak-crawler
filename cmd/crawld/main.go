@@ -18,7 +18,7 @@ import (
 // The tag value: <flag name>;<default value>;<usage>;<options>
 // Flag names default to their kebab-case equivalent.
 type Flags struct {
-	API string `flag:";http://localhost:9090/;API Endpoint"`
+	Port int `flag:";9090;Port to serve gRPC API"`
 
 	// flagbind exposes all of the options of the Fetcher as flags.
 	// I'm working on a way to better control flags of nested structs with
@@ -29,6 +29,7 @@ type Flags struct {
 
 	// TODO: URL Normalization Rule Flags
 
+	// TODO: add a debug logger
 	Debug bool `flag:";;Print additional debug information"`
 }
 

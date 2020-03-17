@@ -102,6 +102,37 @@ func (m *Status) GetStatus() string {
 	return ""
 }
 
+type Empty struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Empty) Reset()         { *m = Empty{} }
+func (m *Empty) String() string { return proto.CompactTextString(m) }
+func (*Empty) ProtoMessage()    {}
+func (*Empty) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5877e6cf3ac6969d, []int{2}
+}
+
+func (m *Empty) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Empty.Unmarshal(m, b)
+}
+func (m *Empty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Empty.Marshal(b, m, deterministic)
+}
+func (m *Empty) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Empty.Merge(m, src)
+}
+func (m *Empty) XXX_Size() int {
+	return xxx_messageInfo_Empty.Size(m)
+}
+func (m *Empty) XXX_DiscardUnknown() {
+	xxx_messageInfo_Empty.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Empty proto.InternalMessageInfo
+
 type ListResponse struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -112,7 +143,7 @@ func (m *ListResponse) Reset()         { *m = ListResponse{} }
 func (m *ListResponse) String() string { return proto.CompactTextString(m) }
 func (*ListResponse) ProtoMessage()    {}
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_5877e6cf3ac6969d, []int{2}
+	return fileDescriptor_5877e6cf3ac6969d, []int{3}
 }
 
 func (m *ListResponse) XXX_Unmarshal(b []byte) error {
@@ -136,6 +167,7 @@ var xxx_messageInfo_ListResponse proto.InternalMessageInfo
 func init() {
 	proto.RegisterType((*URL)(nil), "crawl.URL")
 	proto.RegisterType((*Status)(nil), "crawl.Status")
+	proto.RegisterType((*Empty)(nil), "crawl.Empty")
 	proto.RegisterType((*ListResponse)(nil), "crawl.ListResponse")
 }
 
@@ -144,18 +176,18 @@ func init() {
 }
 
 var fileDescriptor_5877e6cf3ac6969d = []byte{
-	// 162 bytes of a gzipped FileDescriptorProto
+	// 176 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4e, 0x2e, 0x4a, 0x2c,
 	0xcf, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x73, 0x94, 0xc4, 0xb9, 0x98, 0x43,
 	0x83, 0x7c, 0x84, 0x04, 0xb8, 0x98, 0x4b, 0x8b, 0x72, 0x24, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83,
 	0x40, 0x4c, 0x25, 0x05, 0x2e, 0xb6, 0xe0, 0x92, 0xc4, 0x92, 0xd2, 0x62, 0x21, 0x31, 0x2e, 0xb6,
-	0x62, 0x30, 0x0b, 0x2a, 0x0d, 0xe5, 0x29, 0xf1, 0x71, 0xf1, 0xf8, 0x64, 0x16, 0x97, 0x04, 0xa5,
-	0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x1a, 0xd5, 0x72, 0xb1, 0x3a, 0x83, 0xcc, 0x14, 0x52, 0xe1,
-	0x62, 0x0d, 0x2e, 0x49, 0x2c, 0x2a, 0x11, 0xe2, 0xd2, 0x83, 0xd8, 0x18, 0x1a, 0xe4, 0x23, 0xc5,
-	0x0b, 0x65, 0x43, 0x0c, 0x55, 0x62, 0x10, 0x52, 0xe6, 0x62, 0x09, 0x2e, 0xc9, 0x2f, 0xc0, 0xaf,
-	0x48, 0x93, 0x8b, 0x05, 0x64, 0x07, 0x8a, 0x22, 0x61, 0x28, 0x1b, 0xd9, 0x72, 0x25, 0x86, 0x24,
-	0x36, 0xb0, 0xbf, 0x8c, 0x01, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf8, 0xc9, 0xee, 0x11, 0xe6, 0x00,
-	0x00, 0x00,
+	0x62, 0x30, 0x0b, 0x2a, 0x0d, 0xe5, 0x29, 0xb1, 0x73, 0xb1, 0xba, 0xe6, 0x16, 0x94, 0x54, 0x2a,
+	0xf1, 0x71, 0xf1, 0xf8, 0x64, 0x16, 0x97, 0x04, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x1a,
+	0xd5, 0x73, 0xb1, 0x3a, 0x83, 0x0c, 0x17, 0x52, 0xe1, 0x62, 0x0d, 0x2e, 0x49, 0x2c, 0x2a, 0x11,
+	0xe2, 0xd2, 0x83, 0x58, 0x1d, 0x1a, 0xe4, 0x23, 0xc5, 0x0b, 0x65, 0x43, 0x4c, 0x57, 0x62, 0x10,
+	0x52, 0xe6, 0x62, 0x09, 0x2e, 0xc9, 0x2f, 0xc0, 0xaf, 0x48, 0x9b, 0x8b, 0x05, 0x64, 0x87, 0x10,
+	0x0f, 0x54, 0x02, 0x6c, 0xb3, 0x94, 0x30, 0x94, 0x87, 0x6c, 0xbd, 0x12, 0x43, 0x12, 0x1b, 0xd8,
+	0x8b, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x58, 0xee, 0x2d, 0x6e, 0xf1, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -172,7 +204,7 @@ const _ = grpc.SupportPackageIsVersion6
 type CrawlClient interface {
 	Start(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error)
 	Stop(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error)
-	List(ctx context.Context, in *URL, opts ...grpc.CallOption) (*ListResponse, error)
+	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListResponse, error)
 }
 
 type crawlClient struct {
@@ -201,7 +233,7 @@ func (c *crawlClient) Stop(ctx context.Context, in *URL, opts ...grpc.CallOption
 	return out, nil
 }
 
-func (c *crawlClient) List(ctx context.Context, in *URL, opts ...grpc.CallOption) (*ListResponse, error) {
+func (c *crawlClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListResponse, error) {
 	out := new(ListResponse)
 	err := c.cc.Invoke(ctx, "/crawl.Crawl/List", in, out, opts...)
 	if err != nil {
@@ -214,7 +246,7 @@ func (c *crawlClient) List(ctx context.Context, in *URL, opts ...grpc.CallOption
 type CrawlServer interface {
 	Start(context.Context, *URL) (*Status, error)
 	Stop(context.Context, *URL) (*Status, error)
-	List(context.Context, *URL) (*ListResponse, error)
+	List(context.Context, *Empty) (*ListResponse, error)
 }
 
 // UnimplementedCrawlServer can be embedded to have forward compatible implementations.
@@ -227,7 +259,7 @@ func (*UnimplementedCrawlServer) Start(ctx context.Context, req *URL) (*Status, 
 func (*UnimplementedCrawlServer) Stop(ctx context.Context, req *URL) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
 }
-func (*UnimplementedCrawlServer) List(ctx context.Context, req *URL) (*ListResponse, error) {
+func (*UnimplementedCrawlServer) List(ctx context.Context, req *Empty) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 
@@ -272,7 +304,7 @@ func _Crawl_Stop_Handler(srv interface{}, ctx context.Context, dec func(interfac
 }
 
 func _Crawl_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(URL)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -284,7 +316,7 @@ func _Crawl_List_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		FullMethod: "/crawl.Crawl/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CrawlServer).List(ctx, req.(*URL))
+		return srv.(CrawlServer).List(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
