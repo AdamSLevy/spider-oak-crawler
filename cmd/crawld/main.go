@@ -1,9 +1,11 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
 	"time"
 
 	"github.com/AdamSLevy/flagbind"
@@ -19,6 +21,10 @@ import (
 // Flag names default to their kebab-case equivalent.
 type Flags struct {
 	Port int `flag:";9090;Port to serve gRPC API"`
+
+	TLS      bool
+	CertFile string
+	KeyFile  string
 
 	// flagbind exposes all of the options of the Fetcher as flags.
 	// I'm working on a way to better control flags of nested structs with
@@ -55,6 +61,20 @@ func _main(args []string) error {
 		return err
 	}
 
-	fmt.Println("crawld")
-	return nil
+	// Listen for an Interrupt and cancel everything if it occurs.
+	ctx, cancel := context.WithCancel(context.Background())
+	sigint := make(chan os.Signal, 1)
+	signal.Notify(sigint, os.Interrupt)
+	go func() {
+		<-sigint
+		cancel()
+	}()
+
+	g, _, err := StartServer(ctx, &flags)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Waiting for crawl requests...")
+
+	return g.Wait()
 }
