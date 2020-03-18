@@ -9,24 +9,25 @@ import (
 
 func list(client pb.CrawlClient) error {
 	var req pb.Empty
-	_, err := client.List(context.Background(), &req)
+	siteTree, err := client.List(context.Background(), &req)
 	if err != nil {
 		return fmt.Errorf("%v.List(): %w", client, err)
 	}
-	fmt.Println("list")
+	// TODO: Improve SiteTree output
+	fmt.Println("list", siteTree)
 	return nil
 }
 func start(client pb.CrawlClient, url string) error {
-	req := pb.URL{Url: url}
-	_, err := client.Start(context.Background(), &req)
+	req := pb.Host{Url: url}
+	status, err := client.Start(context.Background(), &req)
 	if err != nil {
-		return fmt.Errorf("%v.Start(%v): %w", client, url, err)
+		return err
 	}
-	fmt.Println("start", url)
+	fmt.Println("start", status)
 	return nil
 }
 func stop(client pb.CrawlClient, url string) error {
-	req := pb.URL{Url: url}
+	req := pb.Host{Url: url}
 	_, err := client.Stop(context.Background(), &req)
 	if err != nil {
 		return fmt.Errorf("%v.Stop(%v): %w", client, url, err)

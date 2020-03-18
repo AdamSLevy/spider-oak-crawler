@@ -3,19 +3,38 @@ syntax = "proto3";
 package crawl;
 
 service Crawl {
-        rpc Start(URL) returns (Status) {}
-        rpc Stop(URL) returns (Status) {}
-        rpc List(Empty) returns (ListResponse) {}
+        rpc Start(Host) returns (Status) {}
+        rpc Stop(Host) returns (Empty) {}
+        rpc List(Empty) returns (AllHosts) {}
 }
 
-message URL {
+message Host {
         string url = 1;
 }
 
+enum CrawlStatus {
+        UNKNOWN = 0;
+        CRAWLING = 1;
+        STOPPED = 2;
+        FINISHED = 3;
+}
+
 message Status {
-        string status = 1;
+        CrawlStatus status = 1;
 }
 
 message Empty {}
 
-message ListResponse {}
+message AllHosts {
+        repeated HostStatus hosts = 1;
+}
+
+message HostStatus {
+        string url = 1;
+        CrawlStatus status = 2;
+        SiteTree siteTree = 3;
+}
+
+message SiteTree {
+        map<string, SiteTree> children = 1;
+}

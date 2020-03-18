@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"time"
@@ -29,9 +30,9 @@ type Flags struct {
 	// flagbind exposes all of the options of the Fetcher as flags.
 	// I'm working on a way to better control flags of nested structs with
 	// flagbind.
-	Fetcher fetchbot.Fetcher `flag:";;;flatten"`
+	Fetcher *fetchbot.Fetcher `flag:";;;flatten"`
 
-	HTTPTimeout time.Duration `flag:";5s;HTTP Request Timeout"`
+	HTTPTimeout *time.Duration `flag:";5s;HTTP Request Timeout"`
 
 	// TODO: URL Normalization Rule Flags
 
@@ -51,7 +52,12 @@ func _main(args []string) error {
 
 	// Init & parse flags...
 	var flags Flags
-	//flags.Fetcher = fetchbot.New(nil) // TODO: write handler
+	// Set up the defaults for the Fetcher.
+	flags.Fetcher = fetchbot.New(nil)
+	// Fetcher uses http.DefaultClient, so let the flag set its Timeout
+	// directly.
+	flags.HTTPTimeout = &http.DefaultClient.Timeout
+	// Bind the flags to a FlagSet...
 	fs := flag.NewFlagSet("crawld", flag.ContinueOnError)
 	if err := flagbind.Bind(fs, &flags); err != nil {
 		// Should never happen with a well-formed flags struct.
@@ -70,7 +76,7 @@ func _main(args []string) error {
 		cancel()
 	}()
 
-	g, _, err := StartServer(ctx, &flags)
+	g, err := StartServer(ctx, &flags)
 	if err != nil {
 		return err
 	}

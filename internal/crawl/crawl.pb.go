@@ -24,39 +24,70 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type URL struct {
+type CrawlStatus int32
+
+const (
+	CrawlStatus_UNKNOWN  CrawlStatus = 0
+	CrawlStatus_CRAWLING CrawlStatus = 1
+	CrawlStatus_STOPPED  CrawlStatus = 2
+	CrawlStatus_FINISHED CrawlStatus = 3
+)
+
+var CrawlStatus_name = map[int32]string{
+	0: "UNKNOWN",
+	1: "CRAWLING",
+	2: "STOPPED",
+	3: "FINISHED",
+}
+
+var CrawlStatus_value = map[string]int32{
+	"UNKNOWN":  0,
+	"CRAWLING": 1,
+	"STOPPED":  2,
+	"FINISHED": 3,
+}
+
+func (x CrawlStatus) String() string {
+	return proto.EnumName(CrawlStatus_name, int32(x))
+}
+
+func (CrawlStatus) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_5877e6cf3ac6969d, []int{0}
+}
+
+type Host struct {
 	Url                  string   `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *URL) Reset()         { *m = URL{} }
-func (m *URL) String() string { return proto.CompactTextString(m) }
-func (*URL) ProtoMessage()    {}
-func (*URL) Descriptor() ([]byte, []int) {
+func (m *Host) Reset()         { *m = Host{} }
+func (m *Host) String() string { return proto.CompactTextString(m) }
+func (*Host) ProtoMessage()    {}
+func (*Host) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5877e6cf3ac6969d, []int{0}
 }
 
-func (m *URL) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_URL.Unmarshal(m, b)
+func (m *Host) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Host.Unmarshal(m, b)
 }
-func (m *URL) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_URL.Marshal(b, m, deterministic)
+func (m *Host) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Host.Marshal(b, m, deterministic)
 }
-func (m *URL) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_URL.Merge(m, src)
+func (m *Host) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Host.Merge(m, src)
 }
-func (m *URL) XXX_Size() int {
-	return xxx_messageInfo_URL.Size(m)
+func (m *Host) XXX_Size() int {
+	return xxx_messageInfo_Host.Size(m)
 }
-func (m *URL) XXX_DiscardUnknown() {
-	xxx_messageInfo_URL.DiscardUnknown(m)
+func (m *Host) XXX_DiscardUnknown() {
+	xxx_messageInfo_Host.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_URL proto.InternalMessageInfo
+var xxx_messageInfo_Host proto.InternalMessageInfo
 
-func (m *URL) GetUrl() string {
+func (m *Host) GetUrl() string {
 	if m != nil {
 		return m.Url
 	}
@@ -64,10 +95,10 @@ func (m *URL) GetUrl() string {
 }
 
 type Status struct {
-	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	Status               CrawlStatus `protobuf:"varint,1,opt,name=status,proto3,enum=crawl.CrawlStatus" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
 }
 
 func (m *Status) Reset()         { *m = Status{} }
@@ -95,11 +126,11 @@ func (m *Status) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Status proto.InternalMessageInfo
 
-func (m *Status) GetStatus() string {
+func (m *Status) GetStatus() CrawlStatus {
 	if m != nil {
 		return m.Status
 	}
-	return ""
+	return CrawlStatus_UNKNOWN
 }
 
 type Empty struct {
@@ -133,42 +164,148 @@ func (m *Empty) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Empty proto.InternalMessageInfo
 
-type ListResponse struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type AllHosts struct {
+	Hosts                []*HostStatus `protobuf:"bytes,1,rep,name=hosts,proto3" json:"hosts,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
 }
 
-func (m *ListResponse) Reset()         { *m = ListResponse{} }
-func (m *ListResponse) String() string { return proto.CompactTextString(m) }
-func (*ListResponse) ProtoMessage()    {}
-func (*ListResponse) Descriptor() ([]byte, []int) {
+func (m *AllHosts) Reset()         { *m = AllHosts{} }
+func (m *AllHosts) String() string { return proto.CompactTextString(m) }
+func (*AllHosts) ProtoMessage()    {}
+func (*AllHosts) Descriptor() ([]byte, []int) {
 	return fileDescriptor_5877e6cf3ac6969d, []int{3}
 }
 
-func (m *ListResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ListResponse.Unmarshal(m, b)
+func (m *AllHosts) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_AllHosts.Unmarshal(m, b)
 }
-func (m *ListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ListResponse.Marshal(b, m, deterministic)
+func (m *AllHosts) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_AllHosts.Marshal(b, m, deterministic)
 }
-func (m *ListResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListResponse.Merge(m, src)
+func (m *AllHosts) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AllHosts.Merge(m, src)
 }
-func (m *ListResponse) XXX_Size() int {
-	return xxx_messageInfo_ListResponse.Size(m)
+func (m *AllHosts) XXX_Size() int {
+	return xxx_messageInfo_AllHosts.Size(m)
 }
-func (m *ListResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ListResponse.DiscardUnknown(m)
+func (m *AllHosts) XXX_DiscardUnknown() {
+	xxx_messageInfo_AllHosts.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ListResponse proto.InternalMessageInfo
+var xxx_messageInfo_AllHosts proto.InternalMessageInfo
+
+func (m *AllHosts) GetHosts() []*HostStatus {
+	if m != nil {
+		return m.Hosts
+	}
+	return nil
+}
+
+type HostStatus struct {
+	Url                  string      `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
+	Status               CrawlStatus `protobuf:"varint,2,opt,name=status,proto3,enum=crawl.CrawlStatus" json:"status,omitempty"`
+	SiteTree             *SiteTree   `protobuf:"bytes,3,opt,name=siteTree,proto3" json:"siteTree,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
+	XXX_unrecognized     []byte      `json:"-"`
+	XXX_sizecache        int32       `json:"-"`
+}
+
+func (m *HostStatus) Reset()         { *m = HostStatus{} }
+func (m *HostStatus) String() string { return proto.CompactTextString(m) }
+func (*HostStatus) ProtoMessage()    {}
+func (*HostStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5877e6cf3ac6969d, []int{4}
+}
+
+func (m *HostStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HostStatus.Unmarshal(m, b)
+}
+func (m *HostStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HostStatus.Marshal(b, m, deterministic)
+}
+func (m *HostStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HostStatus.Merge(m, src)
+}
+func (m *HostStatus) XXX_Size() int {
+	return xxx_messageInfo_HostStatus.Size(m)
+}
+func (m *HostStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_HostStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_HostStatus proto.InternalMessageInfo
+
+func (m *HostStatus) GetUrl() string {
+	if m != nil {
+		return m.Url
+	}
+	return ""
+}
+
+func (m *HostStatus) GetStatus() CrawlStatus {
+	if m != nil {
+		return m.Status
+	}
+	return CrawlStatus_UNKNOWN
+}
+
+func (m *HostStatus) GetSiteTree() *SiteTree {
+	if m != nil {
+		return m.SiteTree
+	}
+	return nil
+}
+
+type SiteTree struct {
+	Children             map[string]*SiteTree `protobuf:"bytes,1,rep,name=children,proto3" json:"children,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
+	XXX_unrecognized     []byte               `json:"-"`
+	XXX_sizecache        int32                `json:"-"`
+}
+
+func (m *SiteTree) Reset()         { *m = SiteTree{} }
+func (m *SiteTree) String() string { return proto.CompactTextString(m) }
+func (*SiteTree) ProtoMessage()    {}
+func (*SiteTree) Descriptor() ([]byte, []int) {
+	return fileDescriptor_5877e6cf3ac6969d, []int{5}
+}
+
+func (m *SiteTree) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SiteTree.Unmarshal(m, b)
+}
+func (m *SiteTree) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SiteTree.Marshal(b, m, deterministic)
+}
+func (m *SiteTree) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SiteTree.Merge(m, src)
+}
+func (m *SiteTree) XXX_Size() int {
+	return xxx_messageInfo_SiteTree.Size(m)
+}
+func (m *SiteTree) XXX_DiscardUnknown() {
+	xxx_messageInfo_SiteTree.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SiteTree proto.InternalMessageInfo
+
+func (m *SiteTree) GetChildren() map[string]*SiteTree {
+	if m != nil {
+		return m.Children
+	}
+	return nil
+}
 
 func init() {
-	proto.RegisterType((*URL)(nil), "crawl.URL")
+	proto.RegisterEnum("crawl.CrawlStatus", CrawlStatus_name, CrawlStatus_value)
+	proto.RegisterType((*Host)(nil), "crawl.Host")
 	proto.RegisterType((*Status)(nil), "crawl.Status")
 	proto.RegisterType((*Empty)(nil), "crawl.Empty")
-	proto.RegisterType((*ListResponse)(nil), "crawl.ListResponse")
+	proto.RegisterType((*AllHosts)(nil), "crawl.AllHosts")
+	proto.RegisterType((*HostStatus)(nil), "crawl.HostStatus")
+	proto.RegisterType((*SiteTree)(nil), "crawl.SiteTree")
+	proto.RegisterMapType((map[string]*SiteTree)(nil), "crawl.SiteTree.ChildrenEntry")
 }
 
 func init() {
@@ -176,18 +313,30 @@ func init() {
 }
 
 var fileDescriptor_5877e6cf3ac6969d = []byte{
-	// 176 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4e, 0x2e, 0x4a, 0x2c,
-	0xcf, 0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x73, 0x94, 0xc4, 0xb9, 0x98, 0x43,
-	0x83, 0x7c, 0x84, 0x04, 0xb8, 0x98, 0x4b, 0x8b, 0x72, 0x24, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83,
-	0x40, 0x4c, 0x25, 0x05, 0x2e, 0xb6, 0xe0, 0x92, 0xc4, 0x92, 0xd2, 0x62, 0x21, 0x31, 0x2e, 0xb6,
-	0x62, 0x30, 0x0b, 0x2a, 0x0d, 0xe5, 0x29, 0xb1, 0x73, 0xb1, 0xba, 0xe6, 0x16, 0x94, 0x54, 0x2a,
-	0xf1, 0x71, 0xf1, 0xf8, 0x64, 0x16, 0x97, 0x04, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x1a,
-	0xd5, 0x73, 0xb1, 0x3a, 0x83, 0x0c, 0x17, 0x52, 0xe1, 0x62, 0x0d, 0x2e, 0x49, 0x2c, 0x2a, 0x11,
-	0xe2, 0xd2, 0x83, 0x58, 0x1d, 0x1a, 0xe4, 0x23, 0xc5, 0x0b, 0x65, 0x43, 0x4c, 0x57, 0x62, 0x10,
-	0x52, 0xe6, 0x62, 0x09, 0x2e, 0xc9, 0x2f, 0xc0, 0xaf, 0x48, 0x9b, 0x8b, 0x05, 0x64, 0x87, 0x10,
-	0x0f, 0x54, 0x02, 0x6c, 0xb3, 0x94, 0x30, 0x94, 0x87, 0x6c, 0xbd, 0x12, 0x43, 0x12, 0x1b, 0xd8,
-	0x8b, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x58, 0xee, 0x2d, 0x6e, 0xf1, 0x00, 0x00, 0x00,
+	// 363 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x52, 0x41, 0x6b, 0xf2, 0x40,
+	0x10, 0x4d, 0x8c, 0xd1, 0x7c, 0x13, 0xfd, 0xbe, 0x7c, 0x73, 0x0a, 0x42, 0x41, 0x52, 0x8a, 0x62,
+	0xc1, 0x43, 0xec, 0xa1, 0xed, 0x4d, 0x62, 0x5a, 0xa5, 0x12, 0x25, 0xb1, 0x78, 0x4e, 0xed, 0x82,
+	0x62, 0x6a, 0x64, 0xb3, 0x56, 0x02, 0xfd, 0x17, 0xfd, 0xc3, 0x65, 0x93, 0x8d, 0xd5, 0xb6, 0xd0,
+	0x4b, 0x98, 0x7d, 0xef, 0xcd, 0xec, 0x7b, 0x99, 0x05, 0x7d, 0x41, 0xc3, 0x7d, 0xd4, 0xdd, 0xd2,
+	0x98, 0xc5, 0xa8, 0x66, 0x07, 0xcb, 0x84, 0xf2, 0x30, 0x4e, 0x18, 0x1a, 0xa0, 0xec, 0x68, 0x64,
+	0xca, 0x4d, 0xb9, 0xfd, 0xc7, 0xe7, 0xa5, 0x75, 0x05, 0x95, 0x80, 0x85, 0x6c, 0x97, 0x60, 0x07,
+	0x2a, 0x49, 0x56, 0x65, 0xf4, 0x5f, 0x1b, 0xbb, 0xf9, 0x20, 0x87, 0x7f, 0x73, 0x8d, 0x2f, 0x14,
+	0x56, 0x15, 0x54, 0xf7, 0x65, 0xcb, 0x52, 0xab, 0x07, 0x5a, 0x3f, 0x8a, 0xf8, 0xec, 0x04, 0x5b,
+	0xa0, 0x2e, 0x79, 0x61, 0xca, 0x4d, 0xa5, 0xad, 0xdb, 0xff, 0x45, 0x3f, 0x27, 0x45, 0x7b, 0xce,
+	0x5b, 0x7b, 0x80, 0x4f, 0xf0, 0xbb, 0xa7, 0x23, 0x27, 0xa5, 0xdf, 0x9c, 0xe0, 0x25, 0x68, 0xc9,
+	0x8a, 0x91, 0x19, 0x25, 0xc4, 0x54, 0x9a, 0x72, 0x5b, 0xb7, 0xff, 0x09, 0x75, 0x20, 0x60, 0xff,
+	0x20, 0xb0, 0xde, 0x65, 0xd0, 0x0a, 0x18, 0x6f, 0x40, 0x5b, 0x2c, 0x57, 0xd1, 0x33, 0x25, 0x1b,
+	0xe1, 0xf8, 0xec, 0x4b, 0x67, 0xd7, 0x11, 0xbc, 0xbb, 0x61, 0x34, 0xf5, 0x0f, 0xf2, 0xc6, 0x18,
+	0xea, 0x27, 0x14, 0xcf, 0xb0, 0x26, 0x69, 0x91, 0x61, 0x4d, 0x52, 0xbc, 0x00, 0xf5, 0x35, 0x8c,
+	0x76, 0x24, 0x8b, 0xf0, 0x83, 0xa9, 0x9c, 0xbd, 0x2d, 0x5d, 0xcb, 0x1d, 0x07, 0xf4, 0xa3, 0x64,
+	0xa8, 0x43, 0xf5, 0xd1, 0x7b, 0xf0, 0x26, 0x73, 0xcf, 0x90, 0xb0, 0x06, 0x9a, 0xe3, 0xf7, 0xe7,
+	0xe3, 0x91, 0x77, 0x6f, 0xc8, 0x9c, 0x0a, 0x66, 0x93, 0xe9, 0xd4, 0x1d, 0x18, 0x25, 0x4e, 0xdd,
+	0x8d, 0xbc, 0x51, 0x30, 0x74, 0x07, 0x86, 0x62, 0xbf, 0x81, 0x9a, 0x0d, 0xe1, 0x17, 0x07, 0x2c,
+	0xa4, 0x0c, 0xf5, 0xa3, 0xff, 0xdf, 0xa8, 0x17, 0xf7, 0xe7, 0xfb, 0x93, 0xf0, 0x1c, 0xca, 0x01,
+	0x8b, 0xb7, 0xa7, 0xaa, 0x9a, 0x38, 0xe4, 0xbb, 0x95, 0xb0, 0x05, 0xe5, 0xf1, 0x2a, 0x61, 0x78,
+	0x82, 0x37, 0x8a, 0x2c, 0xc5, 0xe2, 0x2d, 0xe9, 0xa9, 0x92, 0xbd, 0xb6, 0xde, 0x47, 0x00, 0x00,
+	0x00, 0xff, 0xff, 0x8c, 0x92, 0xec, 0x6e, 0x7c, 0x02, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -202,9 +351,9 @@ const _ = grpc.SupportPackageIsVersion6
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CrawlClient interface {
-	Start(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error)
-	Stop(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error)
-	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListResponse, error)
+	Start(ctx context.Context, in *Host, opts ...grpc.CallOption) (*Status, error)
+	Stop(ctx context.Context, in *Host, opts ...grpc.CallOption) (*Empty, error)
+	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AllHosts, error)
 }
 
 type crawlClient struct {
@@ -215,7 +364,7 @@ func NewCrawlClient(cc grpc.ClientConnInterface) CrawlClient {
 	return &crawlClient{cc}
 }
 
-func (c *crawlClient) Start(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error) {
+func (c *crawlClient) Start(ctx context.Context, in *Host, opts ...grpc.CallOption) (*Status, error) {
 	out := new(Status)
 	err := c.cc.Invoke(ctx, "/crawl.Crawl/Start", in, out, opts...)
 	if err != nil {
@@ -224,8 +373,8 @@ func (c *crawlClient) Start(ctx context.Context, in *URL, opts ...grpc.CallOptio
 	return out, nil
 }
 
-func (c *crawlClient) Stop(ctx context.Context, in *URL, opts ...grpc.CallOption) (*Status, error) {
-	out := new(Status)
+func (c *crawlClient) Stop(ctx context.Context, in *Host, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/crawl.Crawl/Stop", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -233,8 +382,8 @@ func (c *crawlClient) Stop(ctx context.Context, in *URL, opts ...grpc.CallOption
 	return out, nil
 }
 
-func (c *crawlClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*ListResponse, error) {
-	out := new(ListResponse)
+func (c *crawlClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*AllHosts, error) {
+	out := new(AllHosts)
 	err := c.cc.Invoke(ctx, "/crawl.Crawl/List", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -244,22 +393,22 @@ func (c *crawlClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOpti
 
 // CrawlServer is the server API for Crawl service.
 type CrawlServer interface {
-	Start(context.Context, *URL) (*Status, error)
-	Stop(context.Context, *URL) (*Status, error)
-	List(context.Context, *Empty) (*ListResponse, error)
+	Start(context.Context, *Host) (*Status, error)
+	Stop(context.Context, *Host) (*Empty, error)
+	List(context.Context, *Empty) (*AllHosts, error)
 }
 
 // UnimplementedCrawlServer can be embedded to have forward compatible implementations.
 type UnimplementedCrawlServer struct {
 }
 
-func (*UnimplementedCrawlServer) Start(ctx context.Context, req *URL) (*Status, error) {
+func (*UnimplementedCrawlServer) Start(ctx context.Context, req *Host) (*Status, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
 }
-func (*UnimplementedCrawlServer) Stop(ctx context.Context, req *URL) (*Status, error) {
+func (*UnimplementedCrawlServer) Stop(ctx context.Context, req *Host) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
 }
-func (*UnimplementedCrawlServer) List(ctx context.Context, req *Empty) (*ListResponse, error) {
+func (*UnimplementedCrawlServer) List(ctx context.Context, req *Empty) (*AllHosts, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 
@@ -268,7 +417,7 @@ func RegisterCrawlServer(s *grpc.Server, srv CrawlServer) {
 }
 
 func _Crawl_Start_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(URL)
+	in := new(Host)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -280,13 +429,13 @@ func _Crawl_Start_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/crawl.Crawl/Start",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CrawlServer).Start(ctx, req.(*URL))
+		return srv.(CrawlServer).Start(ctx, req.(*Host))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Crawl_Stop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(URL)
+	in := new(Host)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -298,7 +447,7 @@ func _Crawl_Stop_Handler(srv interface{}, ctx context.Context, dec func(interfac
 		FullMethod: "/crawl.Crawl/Stop",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CrawlServer).Stop(ctx, req.(*URL))
+		return srv.(CrawlServer).Stop(ctx, req.(*Host))
 	}
 	return interceptor(ctx, in, info, handler)
 }
