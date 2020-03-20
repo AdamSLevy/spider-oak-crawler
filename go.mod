@@ -12,4 +12,4 @@ require (
 )
 
 // Improved fetchbot.Mux handler matching.
-replace github.com/PuerkitoBio/fetchbot v1.2.0 => github.com/AdamSLevy/fetchbot v1.2.1-0.20200318030257-1ac65caf1328
+replace github.com/PuerkitoBio/fetchbot v1.2.0 => github.com/AdamSLevy/fetchbot v1.2.1-0.20200320041741-10eaeff1774b

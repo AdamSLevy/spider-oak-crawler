@@ -1,6 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
-github.com/AdamSLevy/fetchbot v1.2.1-0.20200318030257-1ac65caf1328 h1:vmkTk3QueCJYwSYEE/OZVQ9P44pq/szWVV/FRWOqPwI=
-github.com/AdamSLevy/fetchbot v1.2.1-0.20200318030257-1ac65caf1328/go.mod h1:7Iy5PQC3zRHbCt8lVIBnSS+i8DOD7xpMbKqGq6JkDgM=
+github.com/AdamSLevy/fetchbot v1.2.1-0.20200320041741-10eaeff1774b h1:DWAskDcWZebdy/sl7bVfHtraS2jiKvH1L2h6sBDOadU=
+github.com/AdamSLevy/fetchbot v1.2.1-0.20200320041741-10eaeff1774b/go.mod h1:7Iy5PQC3zRHbCt8lVIBnSS+i8DOD7xpMbKqGq6JkDgM=
 github.com/AdamSLevy/flagbind v0.0.0-20200317230050-c9dd74cc7efd h1:NrASR2XwOmsPTECMm3bR50usUUDcDpPh8UGO8rnxoM0=
 github.com/AdamSLevy/flagbind v0.0.0-20200317230050-c9dd74cc7efd/go.mod h1:S1WLXRn3RczMk9d3oa6ADXH7vTvy3xLmbIq6LiKWauI=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
